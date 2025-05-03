@@ -1,0 +1,14 @@
+[project]
+name = "agentic-trip-plannder"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "crewai-tools>=0.43.0",
+    "crewai>=0.118.0",
+    "pre-commit>=4.2.0",
+]
+
+[tool.ruff]
+extend = "ruff.toml"

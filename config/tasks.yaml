@@ -1,0 +1,9 @@
+research_task:
+    description: >
+        Use the SerperDevTool to find the most relevant and 
+        information about this {area} that relate to {interest}.
+    agent: local_expert
+    expected_output: >
+        A high quality list of things to do in the 
+        area.
+    verbose: true
