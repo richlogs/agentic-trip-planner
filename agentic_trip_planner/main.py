@@ -13,7 +13,7 @@ def main():
     result = research_crew.crew().kickoff(
         inputs={'area': 'Wellington New Zealand', 'interest': 'outdoor activities'}
     )
-    save_to_file(result.raw, 'output_quen.md')
+    save_to_file(result.raw, 'agentic_trip_planner/outputs/output_quen.md')
 
 
 if __name__ == '__main__':
