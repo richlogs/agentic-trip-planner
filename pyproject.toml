@@ -8,6 +8,8 @@ requires-python = ">=3.12"
 dependencies = [
     "crewai-tools>=0.43.0",
     "crewai>=0.118.0",
+    "openai>=1.76.2",
+    "streamlit>=1.45.0",
 ]
 
 
@@ -18,3 +20,4 @@ extend = "ruff.toml"
 dev = [
     "pre-commit>=4.2.0",
 ]
+
