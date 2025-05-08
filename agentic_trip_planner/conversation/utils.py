@@ -18,7 +18,7 @@ def load_prompt(path: str, prompt_name: str):
     return prompt
 
 
-def make_request(client: OpenAI, prompt: list[dict], previous_response: str = None):
+def make_request(client: OpenAI, prompt: list[dict], previous_response: str | None = None):
     """Make a request to the OpenAI API."""
     response = client.responses.create(
         model=MODEL,

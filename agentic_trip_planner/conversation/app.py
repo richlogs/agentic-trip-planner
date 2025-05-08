@@ -1,38 +1,14 @@
 import streamlit as st
 from openai import OpenAI
-from yaml import safe_load
 
-from agentic_trip_planner.conversation.utils import load_prompt, make_request, format_user_question, MODEL, PROMPT_PATH, PROMPT_NAME
-# MODEL = "gpt-4.1-nano"
-# PROMPT_PATH = 'agentic_trip_planner/conversation/config/prompt.yaml'
-# PROMPT_NAME = "trip_planner"
-
-
-# def load_prompt(path: str, prompt_name: str):
-#     """Load the configuration file."""
-#     with open(path, 'r') as file:
-#         config = safe_load(file)
-    
-#     prompt = config.get(prompt_name)
-
-#     if prompt is None:
-#         raise ValueError(f"Prompt '{prompt_name}' not found in the configuration file.")
-#     return prompt
-
-
-# def make_request(client: OpenAI, prompt: list[dict], previous_response: str = None):
-#     """Make a request to the OpenAI API."""
-#     response = client.responses.create(
-#         model=MODEL,
-#         input=prompt,
-#         previous_response_id=previous_response,
-#     )
-#     return response
-
-
-# def format_user_question(question: str):
-#     """Format the user question for the prompt."""
-#     return {"role": "user", "content": question}
+from agentic_trip_planner.conversation.utils import (
+    MODEL,
+    PROMPT_NAME,
+    PROMPT_PATH,
+    format_user_question,
+    load_prompt,
+    make_request,
+)
 
 st.title("Trip Planning Assistant")
 
@@ -58,26 +34,28 @@ for message in st.session_state.messages:
 # Get user input
 if prompt := st.chat_input("How can I help?"):
     # Append user message
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    st.session_state.query.append({"role": "user", "content": prompt})
+    formatted_prompt = format_user_question(prompt)
+    st.session_state.messages.append(formatted_prompt)
+    st.session_state.query.append(formatted_prompt)
     # Display user message
     with st.chat_message("user"):
         st.markdown(prompt)
 
     # Display assistant response
     with st.chat_message("assistant"):
-        response = client.responses.create(
-            model=st.session_state["openai_model"],
-            input=st.session_state.query,
-            stream=False,
-            previous_response_id=st.session_state.previous_response_id,
+        response = make_request(
+            client, 
+            st.session_state.query, 
+            previous_response=st.session_state.previous_response_id
         )
         st.markdown(response.output_text)
-        st.session_state.query = []
 
-    st.session_state.messages.append({"role": "assistant", "content": response.output_text})
+    st.session_state.messages.append(
+        {"role": "assistant", "content": response.output_text}
+    )
         
     # Save the response ID for context
-    st.session_state.previous_response_id = response.id  # or stream.response.id depending on client
+    st.session_state.previous_response_id = response.id 
 
     # Clear query 
+    st.session_state.query = []
